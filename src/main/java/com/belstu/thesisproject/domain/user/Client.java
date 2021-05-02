@@ -1,6 +1,7 @@
 package com.belstu.thesisproject.domain.user;
 
-import com.belstu.thesisproject.domain.post.Event;
+import com.belstu.thesisproject.domain.chat.Chat;
+import com.belstu.thesisproject.domain.workday.Event;
 import com.belstu.thesisproject.updater.UserUpdater;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -34,6 +35,12 @@ public class Client extends User<Client> {
           fetch = FetchType.LAZY,
           cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   private Set<Event> events;
+
+  @OneToMany(
+          mappedBy = "client",
+          fetch = FetchType.LAZY,
+          cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+  private Set<Chat> chats;
 
   @Override
   public Client update(UserUpdater userUpdater, Client newUser) {

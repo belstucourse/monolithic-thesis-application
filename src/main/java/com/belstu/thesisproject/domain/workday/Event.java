@@ -1,4 +1,4 @@
-package com.belstu.thesisproject.domain.post;
+package com.belstu.thesisproject.domain.workday;
 
 import com.belstu.thesisproject.domain.user.Client;
 import com.belstu.thesisproject.domain.user.Psychologist;

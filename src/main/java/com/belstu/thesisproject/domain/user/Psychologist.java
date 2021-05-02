@@ -1,6 +1,7 @@
 package com.belstu.thesisproject.domain.user;
 
-import com.belstu.thesisproject.domain.post.Event;
+import com.belstu.thesisproject.domain.chat.Chat;
+import com.belstu.thesisproject.domain.workday.Event;
 import com.belstu.thesisproject.domain.post.Post;
 import com.belstu.thesisproject.domain.workday.PsychoWorkday;
 import com.belstu.thesisproject.updater.UserUpdater;
@@ -73,6 +74,12 @@ public class Psychologist extends User<Psychologist> {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Event> events;
+
+    @OneToMany(
+            mappedBy = "psychologist",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private Set<Chat> chats;
 
     @Override
     public Psychologist update(final UserUpdater userUpdater, final Psychologist newUser) {
