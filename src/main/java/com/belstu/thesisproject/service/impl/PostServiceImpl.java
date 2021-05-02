@@ -6,10 +6,12 @@ import com.belstu.thesisproject.repository.PostRepository;
 import com.belstu.thesisproject.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
@@ -20,7 +22,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAllPostsByAuthorId(@NotNull String authorId, Pageable pageable) {
-        return postRepository.findAllByAuthorId(authorId, pageable);
+        return postRepository.findAllByPsychologistId(authorId, pageable);
     }
 
     @Override

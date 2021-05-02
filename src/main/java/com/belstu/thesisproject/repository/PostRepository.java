@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, String> {
   Optional<Post> getPostById(final String postId);
-  List<Post> findAllByAuthorId(final String authorId, final Pageable pageable);
+  List<Post> findAllByPsychologistId(final String authorId, final Pageable pageable);
   Page<Post> findAll(Pageable pageable);
 }
