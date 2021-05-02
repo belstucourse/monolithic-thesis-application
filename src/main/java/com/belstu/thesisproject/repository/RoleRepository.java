@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RoleRepository extends JpaRepository<Role, String> {
   Optional<Role> findByUserRole(UserRole userRole);
 
-  Set<Role> findAllByUserRole(Set<UserRole> userRoles);
+  Set<Role> findAllByUserRoleIn(Set<UserRole> userRoles);
 }

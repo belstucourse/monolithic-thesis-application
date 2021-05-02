@@ -2,7 +2,7 @@ server:
   port: 8001
 spring:
   datasource:
-    url: ${POSTGRES_DATABASE_URL:jdbc:postgresql://localhost:5432/customers}
+    url: ${POSTGRES_DATABASE_URL:jdbc:postgresql://localhost:5432/psycho-service}
     username: ${POSTGRES_DATABASE_USERNAME:postgres}
     password: ${POSTGRES_DATABASE_PASSWORD:1234}
   jpa:
@@ -19,6 +19,9 @@ spring:
     #          lob:
     #            non_contextual_creation: true
     generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
 springdoc:
   api-docs:
     path: '/api-docs'

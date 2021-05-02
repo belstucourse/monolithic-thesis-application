@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public void assignRoleToUser(@NotNull final User user) {
     final Set<UserRole> userRoles = user.getRoles();
-    final Set<Role> persistedRoles = roleRepository.findAllByUserRole(userRoles);
+    final Set<Role> persistedRoles = roleRepository.findAllByUserRoleIn(userRoles);
     user.setRoles(persistedRoles);
   }
 }
