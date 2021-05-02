@@ -19,8 +19,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-  UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
   Client map(ClientDto dto);
 
   @InheritInverseConfiguration
