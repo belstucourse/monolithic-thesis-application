@@ -6,4 +6,8 @@ public class ChatDto {
     private String clientId;
 
     private String psychologistId;
+
+    private ChatStatus chatStatus;
+
+    private ChatType chatType;
 }
