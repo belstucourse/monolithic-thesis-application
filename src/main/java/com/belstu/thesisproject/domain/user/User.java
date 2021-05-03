@@ -80,6 +80,8 @@ public abstract class User<T extends User<T>> implements UserUpdateVisitor<T> {
           cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   private Set<Message> messages;
 
+
+
   @PrePersist
   protected void onCreate() {
     registerDate = now();
