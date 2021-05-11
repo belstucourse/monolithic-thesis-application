@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ChatMapper {
-    @Mapping(source = "clientId", target = "client.id")
-    @Mapping(source = "psychologistId", target = "psychologist.id")
-    Chat map(ChatDto dto);
+  @Mapping(source = "chatDto.clientId", target = "client.id")
+  @Mapping(source = "chatDto.psychologistId", target = "psychologist.id")
+  Chat map(ChatDto chatDto);
 
-    @InheritInverseConfiguration
-    ChatDto map(Chat entity);
+  @InheritInverseConfiguration
+  ChatDto map(Chat chatEntity);
 }

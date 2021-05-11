@@ -75,12 +75,10 @@ public abstract class User<T extends User<T>> implements UserUpdateVisitor<T> {
   private Set<Role> roles = newHashSet();
 
   @OneToMany(
-          mappedBy = "sender",
-          fetch = FetchType.LAZY,
-          cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+      mappedBy = "sender",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   private Set<Message> messages;
-
-
 
   @PrePersist
   protected void onCreate() {

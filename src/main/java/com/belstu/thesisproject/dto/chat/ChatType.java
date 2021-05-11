@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ChatType {
-    VIDEO(15),
-    CHAT(10),
-    IMMEDIATE_CHAT(20);
+  VIDEO(15),
+  CHAT(10),
+  IMMEDIATE_CHAT(20);
 
-    private final Integer price;
+  private final Integer price;
 }

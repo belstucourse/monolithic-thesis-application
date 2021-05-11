@@ -16,21 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class ChatController {
-    private final ChatService chatService;
-    private final MessageMapper messageMapper;
-    private final ChatMapper chatMapper;
+  private final ChatService chatService;
+  private final MessageMapper messageMapper;
+  private final ChatMapper chatMapper;
 
-    @MessageMapping("/messages")
-    @SendTo("/topic/messages")
-    public MessageDto saveMessage(MessageDto message) {
-        final Message savedMessage = chatService.saveMessage(messageMapper.map(message));
-        return messageMapper.map(savedMessage);
-    }
+  @MessageMapping("/messages")
+  @SendTo("/topic/messages")
+  public MessageDto saveMessage(MessageDto message) {
+    final Message savedMessage = chatService.saveMessage(messageMapper.map(message));
+    return messageMapper.map(savedMessage);
+  }
 
-    @PostMapping("/api/chats")
-    public ChatDto createChat(ChatDto chatDto)
-    {
-        final Chat chat = chatService.create(chatMapper.map(chatDto));
-        return chatMapper.map(chat);
-    }
+  @PostMapping("/api/chats")
+  public ChatDto createChat(ChatDto chatDto) {
+    final Chat chat = chatService.create(chatMapper.map(chatDto));
+    return chatMapper.map(chat);
+  }
 }

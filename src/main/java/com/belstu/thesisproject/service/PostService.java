@@ -1,16 +1,14 @@
 package com.belstu.thesisproject.service;
 
-
 import com.belstu.thesisproject.domain.post.Post;
 import com.belstu.thesisproject.exception.AuthorNotFoundException;
 import com.belstu.thesisproject.exception.PostNotFoundException;
+import java.util.List;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-
-public interface  PostService {
+public interface PostService {
   Post getPostById(@NotNull String postId) throws PostNotFoundException;
 
   List<Post> getAllPostsByAuthorId(@NotNull String authorId, Pageable pageable)
