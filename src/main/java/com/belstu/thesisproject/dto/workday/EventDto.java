@@ -12,4 +12,5 @@ public class EventDto {
     private LocalDateTime date;
     private Boolean isEnded;
     private Boolean isConfirmed;
+    private String reasonForVisit;
 }

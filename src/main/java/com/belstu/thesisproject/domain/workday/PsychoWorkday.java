@@ -1,6 +1,8 @@
 package com.belstu.thesisproject.domain.workday;
 
 import com.belstu.thesisproject.domain.user.Psychologist;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +34,9 @@ public class PsychoWorkday {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "psychologist_id")
   private Psychologist psychologist;
+
+  @Column(name = "date", nullable = false)
+  private LocalDate date;
 
   @Column(name = "start_date_time", nullable = false)
   private LocalDateTime startDateTime;
