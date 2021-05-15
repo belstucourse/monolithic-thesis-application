@@ -1,14 +1,16 @@
 package com.belstu.thesisproject.domain.user;
 
-import com.belstu.thesisproject.domain.post.Event;
+import com.belstu.thesisproject.domain.chat.Chat;
+import com.belstu.thesisproject.domain.workday.Event;
 import com.belstu.thesisproject.updater.UserUpdater;
+import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,8 @@ import lombok.ToString;
 @Getter
 @Setter
 public class Client extends User<Client> {
+  @Column(name = "birthday_date", nullable = false)
+  private LocalDate birthdayDate;
 
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
@@ -30,10 +34,16 @@ public class Client extends User<Client> {
   private Set<Psychologist> psychologists;
 
   @OneToMany(
-          mappedBy = "client",
-          fetch = FetchType.LAZY,
-          cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+      mappedBy = "client",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   private Set<Event> events;
+
+  @OneToMany(
+      mappedBy = "client",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+  private Set<Chat> chats;
 
   @Override
   public Client update(UserUpdater userUpdater, Client newUser) {

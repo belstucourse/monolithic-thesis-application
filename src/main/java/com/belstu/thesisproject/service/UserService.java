@@ -17,4 +17,6 @@ public interface UserService {
   void delete(@NotNull final String id) throws UserNotFoundException;
 
   User patch(@NotNull final User user);
+
+  boolean existsById(@NotNull final String id);
 }

@@ -3,9 +3,11 @@ package com.belstu.thesisproject.domain.user;
 import static java.time.LocalDate.now;
 import static org.hibernate.validator.internal.util.CollectionHelper.newHashSet;
 
+import com.belstu.thesisproject.domain.chat.Message;
 import com.belstu.thesisproject.updater.UserUpdateVisitor;
 import java.time.LocalDate;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -70,6 +73,12 @@ public abstract class User<T extends User<T>> implements UserUpdateVisitor<T> {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = newHashSet();
+
+  @OneToMany(
+      mappedBy = "sender",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+  private Set<Message> messages;
 
   @PrePersist
   protected void onCreate() {

@@ -29,7 +29,7 @@ public class Tag {
   @ToString.Exclude
   @ManyToMany(
       mappedBy = "tags",
-      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE},
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
       fetch = FetchType.LAZY)
   private Set<Psychologist> psychologists;
 }

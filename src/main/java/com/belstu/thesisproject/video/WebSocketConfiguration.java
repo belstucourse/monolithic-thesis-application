@@ -11,13 +11,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(signalingSocketHandler(), "/room/{id}");
-    }
+  @Override
+  public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
+    webSocketHandlerRegistry.addHandler(signalingSocketHandler(), "/room/{id}");
+  }
 
-    @Bean
-    public WebSocketHandler signalingSocketHandler() {
-        return new SocketHandler();
-    }
+  @Bean
+  public WebSocketHandler signalingSocketHandler() {
+    return new SocketHandler();
+  }
 }

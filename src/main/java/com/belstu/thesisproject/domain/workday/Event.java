@@ -1,4 +1,4 @@
-package com.belstu.thesisproject.domain.post;
+package com.belstu.thesisproject.domain.workday;
 
 import com.belstu.thesisproject.domain.user.Client;
 import com.belstu.thesisproject.domain.user.Psychologist;
@@ -29,13 +29,19 @@ public class Event {
     @JoinColumn(name = "psychologist_id")
     private Psychologist psychologist;
 
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
+
+    @Column(name = "is_ended", nullable = false)
+    private Boolean isEnded;
+
+    @Column(name = "is_confirmed", nullable = false)
+    private Boolean isConfirmed;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private LocalDateTime date;
-
-    private Boolean isEnded;
-
-    private Boolean isConfirmed;
+    @Column(name = "reason_for_visit")
+    private String reasonForVisit;
 }

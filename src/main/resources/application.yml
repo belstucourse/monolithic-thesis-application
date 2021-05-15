@@ -2,9 +2,9 @@ server:
   port: 8001
 spring:
   datasource:
-    url: ${POSTGRES_DATABASE_URL:jdbc:postgresql://localhost:5432/psycho-service}
-    username: ${POSTGRES_DATABASE_USERNAME:postgres}
-    password: ${POSTGRES_DATABASE_PASSWORD:1234}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/psycho-service}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
   jpa:
     properties:
       javax:
@@ -25,3 +25,8 @@ spring:
 springdoc:
   api-docs:
     path: '/api-docs'
+amazonProperties:
+  endpointUrl: https://s3.eu-central-1.amazonaws.com
+  accessKey: AKIAYM5J67CXUEBIOJM7
+  secretKey: d2XGQOb1H6uKr4CFDgygML3tWS75LjSNM4xllPOG
+  bucketName: your-bucket-name

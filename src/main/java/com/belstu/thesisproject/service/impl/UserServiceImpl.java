@@ -68,4 +68,9 @@ public class UserServiceImpl implements UserService {
     final String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
   }
+
+  @Override
+  public boolean existsById(@NotNull final String id) {
+    return userRepository.existsById(id);
+  }
 }
