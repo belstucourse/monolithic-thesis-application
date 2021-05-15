@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class PsychoAvailableTimeslotDto {
-    private LocalDate date;
-    private List<LocalDateTime> slots;
+    private final LocalDate date;
+    private final List<LocalDateTime> slots;
+    private final String psychoId;
 }
