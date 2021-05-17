@@ -20,9 +20,10 @@ public class S3BucketController {
   private final AmazonService amazonService;
 
   @PostMapping
-  public String uploadFile(@RequestParam MultipartFile file,
-                           @RequestParam String objectId,
-                           @RequestParam FileType type) {
+  public String uploadFile(
+      @RequestParam MultipartFile file,
+      @RequestParam String objectId,
+      @RequestParam FileType type) {
     return this.amazonService.uploadFile(file, objectId, type);
   }
 
