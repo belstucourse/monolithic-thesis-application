@@ -23,7 +23,7 @@ function init() {
         console.log("Stream OK");
         localStream = stream;
         selfView.srcObject = localStream;
-        ws = new WebSocket("ws://" + window.location.host + window.location.pathname);
+        ws = new WebSocket("ws://" + window.location.host + "/room" + window.location.pathname);
         ws.onmessage = processWsMessage;
         ws.onopen = logMessage;
         ws.onclose = logMessage;
