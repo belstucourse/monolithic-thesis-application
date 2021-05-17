@@ -4,6 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.belstu.thesisproject.domain.file.FileStorageAttribute;
+import com.belstu.thesisproject.dto.FileType;
+import com.belstu.thesisproject.repository.FileStorageRepository;
 import com.belstu.thesisproject.service.AmazonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +26,7 @@ import static java.util.Objects.requireNonNull;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
     private final AmazonS3 s3client;
-
-
+    private final FileStorageRepository fileStorageRepository;
     @Value("${amazonProperties.endpointUrl}")
     private String endpointUrl;
 
@@ -32,7 +34,7 @@ public class AmazonServiceImpl implements AmazonService {
     private String bucketName;
 
     @Override
-    public String uploadFile(@NotNull MultipartFile multipartFile) {
+    public String uploadFile(@NotNull MultipartFile multipartFile, @NotNull String objectId, @NotNull FileType type) {
 
         String fileUrl = "";
         try {
@@ -44,6 +46,12 @@ public class AmazonServiceImpl implements AmazonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        final FileStorageAttribute storageAttribute = FileStorageAttribute.builder()
+                .objectId(objectId)
+                .url(fileUrl)
+                .fileType(type)
+                .build();
+        fileStorageRepository.save(storageAttribute);
         return fileUrl;
     }
 
@@ -67,7 +75,8 @@ public class AmazonServiceImpl implements AmazonService {
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        s3client.putObject(
+                new PutObjectRequest(bucketName, fileName, file)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 }

@@ -22,39 +22,7 @@ public class PsychologistDto extends UserDto {
 
   @NotBlank private String mobile;
 
-  private Set<TagDto> tags;
+  private String avatarUrl;
 
-  public PsychologistDto(
-      String id,
-      String firstName,
-      String middleName,
-      String lastName,
-      LocalDate registerDate,
-      Boolean deactivated,
-      LocalDate deactivatedDate,
-      String imageUrl,
-      String email,
-      String password,
-      Set<RoleDto> roles,
-      Boolean verified,
-      LocalDate verifiedDate,
-      String mobile,
-      Set<TagDto> tags) {
-    super(
-        id,
-        firstName,
-        middleName,
-        lastName,
-        registerDate,
-        deactivated,
-        deactivatedDate,
-        imageUrl,
-        email,
-        password,
-        roles);
-    this.verified = verified;
-    this.verifiedDate = verifiedDate;
-    this.mobile = mobile;
-    this.tags = tags;
-  }
+  private Set<TagDto> tags;
 }

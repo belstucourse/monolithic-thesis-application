@@ -1,5 +1,6 @@
 package com.belstu.thesisproject.service.impl;
 
+import static com.belstu.thesisproject.dto.chat.MessageStatus.RECEIVED;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
@@ -13,6 +14,8 @@ import com.belstu.thesisproject.service.UserService;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,7 @@ public class ChatServiceImpl implements ChatService {
   public Message saveMessage(@NotNull final Message message) {
     validateChatState(message.getId());
     validateUsersAccess(message.getSender().getId());
+    message.setStatus(RECEIVED);
     return messageRepository.save(message);
   }
 
@@ -68,5 +72,17 @@ public class ChatServiceImpl implements ChatService {
       throw new IllegalArgumentException("User doesn't exists in application");
     }
     return chatRepository.save(chat);
+  }
+
+  @Override
+  public Long countNewMessages(String senderId, String recipientId) {
+    return messageRepository.countBySenderIdAndRecipientIdAndStatus(
+        senderId, recipientId, RECEIVED);
+  }
+
+  @Override
+  public Page<Message> findChatMessages(String clientId, String psychoId, Pageable pageable) {
+    final Chat chat = chatRepository.findByClientIdAndPsychologistId(clientId, psychoId);
+    return messageRepository.findByChatId(chat.getId(), pageable);
   }
 }

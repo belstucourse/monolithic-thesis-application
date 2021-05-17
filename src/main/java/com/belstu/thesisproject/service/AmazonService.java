@@ -1,12 +1,13 @@
 package com.belstu.thesisproject.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public interface AmazonService {
-    String uploadFile(@NotNull MultipartFile multipartFile);
+import com.belstu.thesisproject.dto.FileType;
+import org.springframework.web.multipart.MultipartFile;
 
-    void deleteFileFromS3Bucket(@NotBlank String fileUrl);
+public interface AmazonService {
+  String uploadFile(@NotNull MultipartFile multipartFile, String objectId, FileType type);
+
+  void deleteFileFromS3Bucket(@NotBlank String fileUrl);
 }

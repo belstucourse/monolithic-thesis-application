@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface ChatMapper {
   @Mapping(source = "chatDto.clientId", target = "client.id")
   @Mapping(source = "chatDto.psychologistId", target = "psychologist.id")
+  @Mapping(source = "chatDto.clientName", target = "client.firstName")
+  @Mapping(source = "chatDto.psychologistName", target = "psychologist.firstName")
   Chat map(ChatDto chatDto);
 
   @InheritInverseConfiguration

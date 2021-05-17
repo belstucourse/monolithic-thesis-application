@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
-    @Mapping(source = "eventDto.psychologistId", target = "psychologist.id")
-    @Mapping(source = "eventDto.clientId", target = "client.id")
-    Event map(EventDto eventDto);
+  @Mapping(source = "eventDto.psychologistId", target = "psychologist.id")
+  @Mapping(source = "eventDto.clientId", target = "client.id")
+  Event map(EventDto eventDto);
 
-    @InheritInverseConfiguration
-    EventDto map(Event chatEntity);
+  @InheritInverseConfiguration
+  EventDto map(Event chatEntity);
 }

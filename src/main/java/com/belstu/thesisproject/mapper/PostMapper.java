@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-  @Mapping(source = "chatDto.psychologistId", target = "psychologist.id")
+  @Mapping(source = "dto.psychologistId", target = "psychologist.id")
   Post map(PostDto dto);
 
   @InheritInverseConfiguration

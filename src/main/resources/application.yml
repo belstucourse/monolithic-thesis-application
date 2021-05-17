@@ -29,4 +29,4 @@ amazonProperties:
   endpointUrl: https://s3.eu-central-1.amazonaws.com
   accessKey: AKIAYM5J67CXUEBIOJM7
   secretKey: d2XGQOb1H6uKr4CFDgygML3tWS75LjSNM4xllPOG
-  bucketName: your-bucket-name
+  bucketName: thesis-belstu

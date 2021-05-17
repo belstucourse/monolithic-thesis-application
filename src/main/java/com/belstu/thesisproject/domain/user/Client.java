@@ -25,6 +25,9 @@ public class Client extends User<Client> {
   @Column(name = "birthday_date", nullable = false)
   private LocalDate birthdayDate;
 
+  @Column(name = "avatar_url", length = 100)
+  private String avatarUrl;
+
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @ManyToMany(

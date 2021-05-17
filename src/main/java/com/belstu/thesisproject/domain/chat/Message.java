@@ -1,11 +1,14 @@
 package com.belstu.thesisproject.domain.chat;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.EnumType.STRING;
 
 import com.belstu.thesisproject.domain.user.User;
+import com.belstu.thesisproject.dto.chat.MessageStatus;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -34,8 +37,12 @@ public class Message {
   private LocalDateTime creationDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "sender_id")
   private User sender;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "recipient_id")
+  private User recipient;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "chat_id")
@@ -43,6 +50,10 @@ public class Message {
 
   @Column(name = "text", columnDefinition = "TEXT", nullable = false)
   private String text;
+
+  @Column(name = "status", nullable = false, length = 50, updatable = false)
+  @Enumerated(STRING)
+  private MessageStatus status;
 
   @PrePersist
   protected void onCreate() {
