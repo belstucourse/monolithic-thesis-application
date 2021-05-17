@@ -10,6 +10,10 @@ public class ChatDto {
 
   private String psychologistId;
 
+  private String clientName;
+
+  private String psychologistName;
+
   private ChatStatus chatStatus;
 
   private ChatType chatType;

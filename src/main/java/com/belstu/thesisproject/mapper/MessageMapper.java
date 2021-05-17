@@ -1,7 +1,6 @@
 package com.belstu.thesisproject.mapper;
 
 import com.belstu.thesisproject.domain.chat.Message;
-import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.dto.chat.MessageDto;
 import com.belstu.thesisproject.exception.UserNotFoundException;
 import com.belstu.thesisproject.service.UserService;
@@ -24,15 +23,16 @@ public abstract class MessageMapper {
   @BeforeMapping
   protected void convertUserToId(Message message, @MappingTarget MessageDto messageDto) {
     messageDto.setSenderId(message.getSender().getId());
+    messageDto.setRecipientId(message.getRecipient().getId());
   }
 
   @BeforeMapping
   protected void convertUserToId(MessageDto messageDto, @MappingTarget Message message) {
     final String senderId = messageDto.getSenderId();
-    final User user;
+    final String recipientId = messageDto.getRecipientId();
     try {
-      user = userService.getUserById(senderId);
-      message.setSender(user);
+      message.setSender(userService.getUserById(senderId));
+      message.setRecipient(userService.getUserById(recipientId));
     } catch (UserNotFoundException e) {
       e.printStackTrace();
     }

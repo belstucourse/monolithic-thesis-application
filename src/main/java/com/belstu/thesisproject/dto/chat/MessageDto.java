@@ -14,4 +14,8 @@ public class MessageDto {
   private String chatId;
 
   private String text;
+
+  private String recipientId;
+
+  private MessageStatus status;
 }

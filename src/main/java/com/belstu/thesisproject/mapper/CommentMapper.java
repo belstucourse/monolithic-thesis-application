@@ -13,28 +13,28 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = UserService.class)
 public abstract class CommentMapper {
-    protected UserService userService;
+  protected UserService userService;
 
-    @Mapping(source = "commentDto.postId", target = "post.id")
-    public abstract Comment map(CommentDto commentDto);
+  @Mapping(source = "commentDto.postId", target = "post.id")
+  public abstract Comment map(CommentDto commentDto);
 
-    @InheritInverseConfiguration
-    public abstract CommentDto map(Comment comment);
+  @InheritInverseConfiguration
+  public abstract CommentDto map(Comment comment);
 
-    @BeforeMapping
-    protected void convertUserToId(Comment comment, @MappingTarget CommentDto commentDto) {
-        commentDto.setSenderId(comment.getSender().getId());
+  @BeforeMapping
+  protected void convertUserToId(Comment comment, @MappingTarget CommentDto commentDto) {
+    commentDto.setSenderId(comment.getSender().getId());
+  }
+
+  @BeforeMapping
+  protected void convertUserToId(CommentDto commentDto, @MappingTarget Comment comment) {
+    final String senderId = commentDto.getSenderId();
+    final User user;
+    try {
+      user = userService.getUserById(senderId);
+      comment.setSender(user);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
     }
-
-    @BeforeMapping
-    protected void convertUserToId(CommentDto commentDto, @MappingTarget Comment comment) {
-        final String senderId = commentDto.getSenderId();
-        final User user;
-        try {
-            user = userService.getUserById(senderId);
-            comment.setSender(user);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }

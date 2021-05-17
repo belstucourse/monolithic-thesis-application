@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
   private final RoleService roleService;
   private final PasswordEncoder passwordEncoder;
 
+
   @Override
   public User getUserById(@NotNull final String id) throws UserNotFoundException {
     return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));

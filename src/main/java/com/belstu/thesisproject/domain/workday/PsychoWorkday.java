@@ -1,7 +1,6 @@
 package com.belstu.thesisproject.domain.workday;
 
 import com.belstu.thesisproject.domain.user.Psychologist;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
