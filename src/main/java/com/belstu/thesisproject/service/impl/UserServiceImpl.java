@@ -1,12 +1,17 @@
 package com.belstu.thesisproject.service.impl;
 
-import com.belstu.thesisproject.domain.user.Role;
+import static java.util.stream.Collectors.toSet;
+
+import com.belstu.thesisproject.domain.user.Psychologist;
+import com.belstu.thesisproject.domain.user.Tag;
 import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.repository.TagRepository;
 import com.belstu.thesisproject.repository.UserRepository;
 import com.belstu.thesisproject.service.RoleService;
 import com.belstu.thesisproject.service.UserService;
 import com.belstu.thesisproject.updater.UserUpdater;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -25,7 +30,7 @@ public class UserServiceImpl implements UserService {
   private final UserUpdater userUpdater;
   private final RoleService roleService;
   private final PasswordEncoder passwordEncoder;
-
+  private final TagRepository tagRepository;
 
   @Override
   public User getUserById(@NotNull final String id) throws UserNotFoundException {
@@ -35,10 +40,22 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public User save(@NotNull final User user) {
-    final Set<Role> roles = user.getRoles();
+    populateTagsVetIfNeeded(user);
     roleService.assignRoleToUser(user);
     encodePassword(user);
     return userRepository.save(user);
+  }
+
+  private void populateTagsVetIfNeeded(final User user) {
+    if (user instanceof Psychologist) {
+      final Psychologist psychologist = (Psychologist) user;
+      final Set<Tag> persistedTags =
+          psychologist.getTags().stream()
+              .peek(tag -> tagRepository.findByName(tag.getName()).orElse(tag))
+              .collect(toSet());
+      final HashSet<Tag> tags = new HashSet<>(tagRepository.saveAll(persistedTags));
+      psychologist.setTags(tags);
+    }
   }
 
   @Override
