@@ -25,4 +25,6 @@ public class PsychologistDto extends UserDto {
   private String avatarUrl;
 
   private Set<TagDto> tags;
+
+  private String education;
 }

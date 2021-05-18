@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,8 @@ import org.hibernate.annotations.GenericGenerator;
 @ToString
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class PsychoWorkday {
   @Id
   @GeneratedValue(generator = "uuid2")

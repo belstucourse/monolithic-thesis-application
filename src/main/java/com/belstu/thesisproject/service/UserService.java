@@ -1,9 +1,14 @@
 package com.belstu.thesisproject.service;
 
+import com.belstu.thesisproject.domain.user.Psychologist;
 import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.exception.UserNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public interface UserService {
   User getUserById(@NotNull final String id) throws UserNotFoundException;
@@ -19,4 +24,6 @@ public interface UserService {
   User patch(@NotNull final User user);
 
   boolean existsById(@NotNull final String id);
+
+  Page<Psychologist> getPsychologistsByTagNames(List<String> tagNames, Pageable pageable);
 }

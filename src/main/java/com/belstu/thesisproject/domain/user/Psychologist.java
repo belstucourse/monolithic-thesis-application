@@ -42,6 +42,9 @@ public class Psychologist extends User<Psychologist> {
   @Column(name = "avatar_url", length = 100)
   private String avatarUrl;
 
+  @Column(name = "education", length = 100)
+  private String education;
+
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @ManyToMany(fetch = FetchType.LAZY)

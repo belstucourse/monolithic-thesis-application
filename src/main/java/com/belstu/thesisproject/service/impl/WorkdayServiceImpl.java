@@ -1,5 +1,6 @@
 package com.belstu.thesisproject.service.impl;
 
+import com.belstu.thesisproject.domain.user.Psychologist;
 import com.belstu.thesisproject.domain.workday.PsychoWorkday;
 import com.belstu.thesisproject.repository.PsychoWorkdayRepository;
 import com.belstu.thesisproject.service.WorkdayService;
@@ -14,14 +15,19 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class WorkdayServiceImpl implements WorkdayService {
   private final PsychoWorkdayRepository workdayRepository;
-
   @SneakyThrows
   @Override
   public PsychoWorkday getWorkdayByPsychoIdAndWorkingDate(
       @NotNull final String id, @NotNull final LocalDate date) {
+    Psychologist psychologist=new Psychologist();
+    psychologist.setId(id);
+    final PsychoWorkday psychoWorkday = PsychoWorkday.builder()
+            .date(date)
+            .psychologist(psychologist)
+            .build();
     return workdayRepository
         .findByDateAndPsychologistId(date, id)
-        .orElseThrow(() -> new NotFoundException("Workday not found"));
+        .orElse(psychoWorkday);
   }
 
   @Override
