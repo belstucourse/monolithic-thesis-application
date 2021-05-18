@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
       final Psychologist psychologist = (Psychologist) user;
       final Set<Tag> persistedTags =
           psychologist.getTags().stream()
-              .peek(tag -> tagRepository.findByName(tag.getName()).orElse(tag))
+              .map(tag -> tagRepository.findByName(tag.getName()).orElse(tag))
               .collect(toSet());
       final HashSet<Tag> tags = new HashSet<>(tagRepository.saveAll(persistedTags));
       psychologist.setTags(tags);
