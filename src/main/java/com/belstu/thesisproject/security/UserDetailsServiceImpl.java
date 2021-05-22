@@ -5,15 +5,15 @@ import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.dto.user.UserRole;
 import com.belstu.thesisproject.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-
-import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -27,9 +27,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getEmail(), user.getPassword(), convertRoles(user.getRoles()));
     }
 
-    private Collection<? extends GrantedAuthority> convertRoles(
+    private Collection<SimpleGrantedAuthority> convertRoles(
             final Collection<Role> roles) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getUserRole().name()));
+        }
         final String[] roleNames = roles.stream().map(Role::getUserRole).map(UserRole::name).toArray(String[]::new);
-        return createAuthorityList(roleNames);
+        return authorities;
     }
 }

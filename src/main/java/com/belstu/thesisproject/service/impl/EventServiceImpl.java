@@ -8,9 +8,11 @@ import com.belstu.thesisproject.service.EventService;
 import com.belstu.thesisproject.service.MailSenderService;
 import com.belstu.thesisproject.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -30,11 +32,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public Event save(@NotNull Event event) {
+    public Event save(@NotNull Event event, @NotBlank String email) {
         final User client = userService.getUserById(event.getClient().getId());
         final User psycho = userService.getUserById(event.getPsychologist().getId());
         final String clientEmail = client.getEmail();
         final String psychoEmail = psycho.getEmail();
+        validateEmail(clientEmail, psychoEmail, email);
         final Event persistedEvent = eventRepository.save(event);
         if (isEmpty(clientEmail) && isEmpty(psychoEmail)) {
             throw new UserNotFoundException("Invalid email");
@@ -67,5 +70,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getByUserIdsAndDate(@NotNull String clientId, @NotNull String psychoId, @NotNull LocalDateTime date) {
         return eventRepository.findByClientIdAndPsychologistIdAndDate(clientId, psychoId, date).orElseThrow(() -> new UserNotFoundException("Event not found"));
+    }
+
+    private void validateEmail(String clientEmail, String psychoEmail, String currentUserEmail) {
+        if (!clientEmail.equals(currentUserEmail) && !psychoEmail.equals(currentUserEmail)) {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 }

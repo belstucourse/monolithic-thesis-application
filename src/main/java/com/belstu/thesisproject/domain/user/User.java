@@ -67,7 +67,7 @@ public abstract class User<T extends User<T>> implements UserUpdateVisitor<T> {
 
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "user_role",
       joinColumns = @JoinColumn(name = "user_id"),

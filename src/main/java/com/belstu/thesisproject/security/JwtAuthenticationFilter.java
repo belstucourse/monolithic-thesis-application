@@ -39,8 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (SignatureException e) {
                 logger.error("Authentication failed. Username and password not valid.", e);
             }
-        } else {
-
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {

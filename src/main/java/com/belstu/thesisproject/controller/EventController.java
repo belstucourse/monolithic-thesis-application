@@ -7,11 +7,14 @@ import com.belstu.thesisproject.service.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+
+import static com.belstu.thesisproject.service.CurrentUserEmailExtractor.getEmailOfCurrentUser;
 
 @RestController
 @RequestMapping("/api/event")
@@ -26,8 +29,9 @@ public class EventController {
     }
 
     @PostMapping
-    public EventDto saveEvent(EventDto eventDto) {
+    public EventDto saveEvent(@RequestBody EventDto eventDto) {
+        final String email = getEmailOfCurrentUser();
         final Event event = eventMapper.map(eventDto);
-        return eventMapper.map(eventService.save(event));
+        return eventMapper.map(eventService.save(event, email));
     }
 }
