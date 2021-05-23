@@ -109,4 +109,9 @@ public class UserServiceImpl implements UserService {
         final List<Tag> persistedTags = tagRepository.findByNameIn(tagNames);
         return psychologistRepository.findDistinctByTagsIn(persistedTags, pageable);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }

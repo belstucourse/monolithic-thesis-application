@@ -63,6 +63,11 @@ public class UserController {
         return userMapper.map(userService.getUserByEmail(email));
     }
 
+    @GetMapping("/all")
+    public List<UserDto> getAllUsers() throws UserNotFoundException {
+        return userMapper.mapToDtoList(userService.getAllUsers());
+    }
+
     @PostMapping
     @Validated(OnCreate.class)
     public UserDto saveUser(@RequestBody @Valid final UserDto userDto) {

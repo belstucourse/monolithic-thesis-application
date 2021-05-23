@@ -26,4 +26,6 @@ public interface UserService {
   boolean existsById(@NotNull final String id);
 
   Page<Psychologist> getPsychologistsByTagNames(List<String> tagNames, Pageable pageable);
+
+  List<User> getAllUsers();
 }
