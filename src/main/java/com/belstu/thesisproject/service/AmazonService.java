@@ -9,4 +9,6 @@ public interface AmazonService {
   String uploadFile(@NotNull MultipartFile multipartFile, String objectId, FileType type);
 
   void deleteFileFromS3Bucket(@NotBlank String fileUrl);
+
+    String getSertificateUrl(String objectId, FileType fileType);
 }

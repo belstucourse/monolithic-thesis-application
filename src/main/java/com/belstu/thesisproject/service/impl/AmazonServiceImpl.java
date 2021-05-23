@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -68,6 +69,10 @@ public class AmazonServiceImpl implements AmazonService {
     public void deleteFileFromS3Bucket(@NotBlank String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
+    }
+
+    public String getSertificateUrl(String objectId, FileType fileType) {
+        return fileStorageRepository.findByObjectIdAndFileType(objectId, fileType).get().getUrl();
     }
 
     private String generateFileName(MultipartFile multiPart) {

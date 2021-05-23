@@ -41,6 +41,10 @@ public interface UserMapper {
   @InheritInverseConfiguration
   AdminDto map(Admin entity);
 
+  List<UserDto> mapToDtoList(List<User> allUsers);
+
+  List<PsychologistDto> mapToDtoListP(List<Psychologist> allUsers);
+
   @InheritConfiguration
   default UserDto map(final User entity) {
     if (entity instanceof Client) {
@@ -72,5 +76,5 @@ public interface UserMapper {
     }
   }
 
-  List<UserDto> mapToDtoList(List<User> allUsers);
+
 }

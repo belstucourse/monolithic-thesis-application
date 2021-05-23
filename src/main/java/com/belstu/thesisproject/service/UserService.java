@@ -19,6 +19,8 @@ public interface UserService {
 
   User update(@NotNull final User user) throws UserNotFoundException;
 
+  Psychologist update(@NotNull final Psychologist psychologist) throws UserNotFoundException;
+
   void delete(@NotNull final String id) throws UserNotFoundException;
 
   User patch(@NotNull final User user);
@@ -28,4 +30,6 @@ public interface UserService {
   Page<Psychologist> getPsychologistsByTagNames(List<String> tagNames, Pageable pageable);
 
   List<User> getAllUsers();
+
+  List<Psychologist> getAllPsychologist();
 }
