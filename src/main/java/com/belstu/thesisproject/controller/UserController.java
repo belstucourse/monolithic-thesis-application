@@ -2,6 +2,7 @@ package com.belstu.thesisproject.controller;
 
 import com.belstu.thesisproject.domain.user.Psychologist;
 import com.belstu.thesisproject.domain.user.User;
+import com.belstu.thesisproject.dto.FileType;
 import com.belstu.thesisproject.dto.user.PsychologistDto;
 import com.belstu.thesisproject.dto.user.UserDto;
 import com.belstu.thesisproject.exception.UserNotFoundException;
@@ -58,9 +59,24 @@ public class UserController {
         return psychologistDtos;
     }
 
+    @GetMapping("/all-psycho")
+    public List<PsychologistDto> getPsychologists() {
+        final List<Psychologist> psychologists = userService.getAllPsychologist();
+        List<PsychologistDto> res = userMapper.mapToDtoListP(psychologists);
+        for (PsychologistDto p: res) {
+            p.setSertificateUrl(amazonService.getSertificateUrl(p.getId(), FileType.CERTIFICATE));
+        }
+        return res;
+    }
+
     @GetMapping
     public UserDto getUserByEmail(@RequestParam final String email) throws UserNotFoundException {
         return userMapper.map(userService.getUserByEmail(email));
+    }
+
+    @GetMapping("/all")
+    public List<UserDto> getAllUsers() throws UserNotFoundException {
+        return userMapper.mapToDtoList(userService.getAllUsers());
     }
 
     @PostMapping
@@ -77,6 +93,14 @@ public class UserController {
             throws UserNotFoundException {
         final User user = userMapper.map(userDto);
         return userMapper.map(userService.update(user));
+    }
+
+    @PutMapping("/psycho")
+    @Validated(OnUpdate.class)
+    public PsychologistDto updatePsychologist(@RequestBody @Valid final PsychologistDto psychologistDto)
+            throws UserNotFoundException {
+        final Psychologist psychologist = userMapper.map(psychologistDto);
+        return userMapper.map(userService.update(psychologist));
     }
 
     @PatchMapping

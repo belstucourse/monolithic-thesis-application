@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FileStorageRepository extends JpaRepository<FileStorageAttribute, String> {
   Optional<FileStorageAttribute> findByObjectId(final String objectId);
-  FileStorageAttribute findByObjectIdAndFileType(final String objectId, FileType fileType);
+  Optional<FileStorageAttribute> findByObjectIdAndFileType(final String objectId, FileType fileType);
 }

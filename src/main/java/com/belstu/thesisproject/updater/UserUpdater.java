@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @AllArgsConstructor
 public class UserUpdater {
@@ -26,6 +28,8 @@ public class UserUpdater {
   public Psychologist update(final Psychologist existingUser, final Psychologist newUser) {
     return updateBasicUser(existingUser, newUser)
         .update(newUser::getMobile, existingUser::setMobile)
+            .update(newUser::getVerified, existingUser::setVerified)
+            //.update(newUser::getVerifiedDate, LocalDate.now().toString())
         .save(userRepository::save);
   }
 

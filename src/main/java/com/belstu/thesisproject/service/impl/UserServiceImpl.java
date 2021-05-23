@@ -85,6 +85,14 @@ public class UserServiceImpl implements UserService {
         return existingUser.update(userUpdater, newUser);
     }
 
+    @Override
+    public Psychologist update(@NotNull Psychologist newPsychologist) throws UserNotFoundException {
+        final String psychologistId = newPsychologist.getId();
+        final User existingPsychologist =
+                psychologistRepository.findById(psychologistId).orElseThrow(() -> new UserNotFoundException(psychologistId));
+        return (Psychologist) existingPsychologist.update(userUpdater, newPsychologist);
+    }
+
     public void delete(@NotNull final String id) throws UserNotFoundException {
         userRepository.deleteById(id);
     }
@@ -108,5 +116,15 @@ public class UserServiceImpl implements UserService {
     public Page<Psychologist> getPsychologistsByTagNames(final List<String> tagNames, Pageable pageable) {
         final List<Tag> persistedTags = tagRepository.findByNameIn(tagNames);
         return psychologistRepository.findDistinctByTagsIn(persistedTags, pageable);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<Psychologist> getAllPsychologist() {
+        return psychologistRepository.findAll();
     }
 }
