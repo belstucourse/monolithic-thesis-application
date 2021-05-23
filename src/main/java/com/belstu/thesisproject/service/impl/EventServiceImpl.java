@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.APPOINTMENT_CONFIRMED_MESSAGE;
 import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.CONGRATULATION;
@@ -65,6 +66,11 @@ public class EventServiceImpl implements EventService {
                     format(APPOINTMENT_CONFIRMED_MESSAGE, psycho.getFirstName(), event.getDate().toString(), persistedEvent.getRoomId()));
         }
         return persistedEvent;
+    }
+
+    @Override
+    public List<Event> getByPsychoId(String psychoId) {
+        return eventRepository.findByPsychologistId(psychoId);
     }
 
     @Override

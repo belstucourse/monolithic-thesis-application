@@ -29,12 +29,10 @@ public abstract class UserDto {
   @NotBlank(groups = OnUpdate.class)
   private String id;
 
-  @NotBlank private String firstName;
-  @NotBlank private String middleName;
-  @NotBlank private String lastName;
+  @NotBlank(groups = OnCreate.class) private String firstName;
+  @NotBlank(groups = OnCreate.class) private String middleName;
+  @NotBlank(groups = OnCreate.class) private String lastName;
 
-  @PastOrPresent(groups = OnUpdate.class)
-  @Null(groups = OnCreate.class)
   private LocalDate registerDate;
 
   private Boolean deactivated;
@@ -43,12 +41,11 @@ public abstract class UserDto {
 
   private String imageUrl;
 
-  @NotBlank private String email;
+  @NotBlank(groups = OnCreate.class) private String email;
 
   @NotBlank(groups = OnCreate.class)
   private String password;
 
-  @NotNull(groups = OnUpdate.class)
   @Null(groups = OnCreate.class)
   private Set<RoleDto> roles;
 }

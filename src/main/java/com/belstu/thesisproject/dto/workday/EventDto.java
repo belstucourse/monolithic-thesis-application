@@ -12,4 +12,5 @@ public class EventDto {
   private Boolean isEnded;
   private Boolean isConfirmed;
   private String reasonForVisit;
+  private String roomId;
 }
