@@ -1,13 +1,15 @@
 package com.belstu.thesisproject.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class VideoCallController {
-  @RequestMapping(method = RequestMethod.GET, value = "/2")
-  public String index() {
-    return "index.html";
-  }
+    @GetMapping(value = "")
+    public String index(@RequestParam String roomId, Model model) {
+        model.addAttribute("roomId", roomId);
+        return "index.html";
+    }
 }
