@@ -10,4 +10,5 @@ public class PostDto {
   private String text;
   private LocalDate postDate;
   private String psychologistId;
+  private String photoUrl;
 }
