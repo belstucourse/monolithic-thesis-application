@@ -13,4 +13,5 @@ public class EventDto {
   private Boolean isConfirmed;
   private String reasonForVisit;
   private String roomId;
+  private String feedback;
 }

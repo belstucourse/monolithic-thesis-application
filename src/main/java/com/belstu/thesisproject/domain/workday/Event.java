@@ -51,6 +51,9 @@ public class Event {
     @Column(name = "room_id")
     private String roomId;
 
+    @Column(name = "feedback")
+    private String feedback;
+
     @PrePersist
     public void onCreate() {
         isEnded = false;

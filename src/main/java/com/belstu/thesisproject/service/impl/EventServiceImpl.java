@@ -74,6 +74,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getClientEvents(String clientId) {
+        return eventRepository.findByClientId(clientId);
+    }
+
+    @Override
+    public Event getByRoomId(String roomId) {
+        return eventRepository.findByRoomId(roomId).orElseThrow(()->new UserNotFoundException(roomId));
+    }
+
+    @Override
     public Event getByUserIdsAndDate(@NotNull String clientId, @NotNull String psychoId, @NotNull LocalDateTime date) {
         return eventRepository.findByClientIdAndPsychologistIdAndDate(clientId, psychoId, date).orElseThrow(() -> new UserNotFoundException("Event not found"));
     }

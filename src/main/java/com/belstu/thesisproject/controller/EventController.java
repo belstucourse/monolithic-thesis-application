@@ -31,6 +31,16 @@ public class EventController {
         return eventMapper.map(eventService.getByUserIdsAndDate(clientId, psychoId, date));
     }
 
+    @GetMapping("/room/{roomId}")
+    public EventDto getEventByRoomID(@PathVariable String roomId) {
+        return eventMapper.map(eventService.getByRoomId(roomId));
+    }
+
+    @GetMapping("/{clientId}/client")
+    public List<EventDto> getClientEvents(@PathVariable String clientId) {
+        return eventMapper.mapToDtoList(eventService.getClientEvents(clientId));
+    }
+
     @GetMapping("/{psychoId}")
     public List<EventDto> getEventOfPsycho(@PathVariable String psychoId) {
         return eventMapper.mapToDtoList(eventService.getByPsychoId(psychoId));

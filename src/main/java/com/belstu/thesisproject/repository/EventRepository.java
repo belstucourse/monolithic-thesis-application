@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, String> {
     Optional<Event> findByClientIdAndPsychologistIdAndDate(String clientId, String psychoId, LocalDateTime date);
     List<Event> findByPsychologistId(String psychoId);
+    List<Event> findByClientId(String clientId);
+    Optional<Event> findByRoomId(String roomId);
 }

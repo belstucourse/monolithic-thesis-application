@@ -15,4 +15,8 @@ public interface EventService {
     Event update(@NotNull Event event);
 
     List<Event> getByPsychoId(String psychoId);
+
+    List<Event> getClientEvents(String clientId);
+
+    Event getByRoomId(String roomId);
 }

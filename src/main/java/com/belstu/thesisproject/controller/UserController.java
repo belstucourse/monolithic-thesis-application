@@ -1,5 +1,6 @@
 package com.belstu.thesisproject.controller;
 
+import com.belstu.thesisproject.domain.user.Client;
 import com.belstu.thesisproject.domain.user.Psychologist;
 import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.dto.FileType;
@@ -47,7 +48,16 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable final String id) throws UserNotFoundException {
-        return userMapper.map(userService.getUserById(id));
+        final User user = userService.getUserById(id);
+
+        final String sertificateUrl = amazonService.getSertificateUrl(user.getId(), FileType.AVATAR);
+        if (user instanceof Client) {
+            ((Client) user).setAvatarUrl(sertificateUrl);
+        }
+        if (user instanceof Psychologist) {
+            ((Psychologist) user).setAvatarUrl(sertificateUrl);
+        }
+        return userMapper.map(user);
     }
 
     @GetMapping("/doctors")
@@ -56,6 +66,11 @@ public class UserController {
             direction = DESC) Pageable pageable) {
         final Page<Psychologist> psychologists = userService.getPsychologistsByTagNames(tagNames, pageable);
         final Page<PsychologistDto> psychologistDtos = psychologists.map(userMapper::map);
+        psychologistDtos.map(psychologistDto -> {
+            final String sertificateUrl = amazonService.getSertificateUrl(psychologistDto.getId(), FileType.AVATAR);
+            psychologistDto.setAvatarUrl(sertificateUrl);
+            return psychologistDto;
+        });
         return psychologistDtos;
     }
 
@@ -63,8 +78,9 @@ public class UserController {
     public List<PsychologistDto> getPsychologists() {
         final List<Psychologist> psychologists = userService.getAllPsychologist();
         List<PsychologistDto> res = userMapper.mapToDtoListP(psychologists);
-        for (PsychologistDto p: res) {
+        for (PsychologistDto p : res) {
             p.setSertificateUrl(amazonService.getSertificateUrl(p.getId(), FileType.CERTIFICATE));
+            p.setAvatarUrl(amazonService.getSertificateUrl(p.getId(), FileType.AVATAR));
         }
         return res;
     }
@@ -76,7 +92,17 @@ public class UserController {
 
     @GetMapping("/all")
     public List<UserDto> getAllUsers() throws UserNotFoundException {
-        return userMapper.mapToDtoList(userService.getAllUsers());
+        final List<User> allUsers = userService.getAllUsers();
+        allUsers.stream().forEach(user -> {
+            final String sertificateUrl = amazonService.getSertificateUrl(user.getId(), FileType.AVATAR);
+            if (user instanceof Client) {
+                ((Client) user).setAvatarUrl(sertificateUrl);
+            }
+            if (user instanceof Psychologist) {
+                ((Psychologist) user).setAvatarUrl(sertificateUrl);
+            }
+        });
+        return userMapper.mapToDtoList(allUsers);
     }
 
     @PostMapping
