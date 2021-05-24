@@ -72,7 +72,7 @@ public class AmazonServiceImpl implements AmazonService {
     }
 
     public String getSertificateUrl(String objectId, FileType fileType) {
-        return fileStorageRepository.findByObjectIdAndFileType(objectId, fileType).get().getUrl();
+        return fileStorageRepository.findByObjectIdAndFileType(objectId, fileType).orElseGet(()->new FileStorageAttribute()).getUrl();
     }
 
     private String generateFileName(MultipartFile multiPart) {
