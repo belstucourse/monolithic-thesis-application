@@ -51,6 +51,6 @@ public class WorkdayServiceImpl implements WorkdayService {
     public List<PsychoWorkday> getWorkdayOfPsychoOnWeek(String psychoId) {
         final LocalDate endDate = LocalDate.now();
         final LocalDate startDate = endDate.minusWeeks(1);
-        return workdayRepository.findByDateGreaterThanEqualAndDateLessThanEqual(startDate, endDate);
+        return workdayRepository.findByDateGreaterThanEqualAndDateLessThanEqualAndPsychologistId(startDate, endDate, psychoId);
     }
 }

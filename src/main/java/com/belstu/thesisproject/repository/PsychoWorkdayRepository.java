@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PsychoWorkdayRepository extends JpaRepository<PsychoWorkday, String> {
   Optional<PsychoWorkday> findByDateAndPsychologistId(LocalDate date, String psychoId);
-  List<PsychoWorkday> findByDateGreaterThanEqualAndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+  List<PsychoWorkday> findByDateGreaterThanEqualAndDateLessThanEqualAndPsychologistId(LocalDate startDate, LocalDate endDate, String psychoId);
   void deleteByPsychologistIdAndDate(String psychoId, LocalDate date);
 }

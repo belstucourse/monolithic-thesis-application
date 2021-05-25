@@ -1,5 +1,6 @@
 package com.belstu.thesisproject.domain.user;
 
+import com.belstu.thesisproject.domain.Feedback;
 import com.belstu.thesisproject.domain.chat.Chat;
 import com.belstu.thesisproject.domain.workday.Event;
 import com.belstu.thesisproject.updater.UserUpdater;
@@ -47,6 +48,12 @@ public class Client extends User<Client> {
       fetch = FetchType.LAZY,
       cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   private Set<Chat> chats;
+
+  @OneToMany(
+          mappedBy = "client",
+          fetch = FetchType.LAZY,
+          cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+  private Set<Feedback> feedbacks;
 
   @Override
   public Client update(UserUpdater userUpdater, Client newUser) {
