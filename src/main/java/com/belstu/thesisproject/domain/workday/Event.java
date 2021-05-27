@@ -57,13 +57,14 @@ public class Event {
     @PrePersist
     public void onCreate() {
         isEnded = false;
-        isConfirmed = false;
+        isConfirmed = true;
+        roomId = UUID.randomUUID().toString();
     }
 
     @PreUpdate
     public void OnUpdate() {
-        if (isConfirmed) {
-            roomId = UUID.randomUUID().toString();
+        if (!isConfirmed) {
+            roomId = "";
         }
     }
 }

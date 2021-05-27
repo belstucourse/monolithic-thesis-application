@@ -12,4 +12,5 @@ public interface EventRepository extends JpaRepository<Event, String> {
     List<Event> findByPsychologistId(String psychoId);
     List<Event> findByClientId(String clientId);
     Optional<Event> findByRoomId(String roomId);
+    Optional<Event> findByDateAndPsychologistId(LocalDateTime date, String psychoId);
 }

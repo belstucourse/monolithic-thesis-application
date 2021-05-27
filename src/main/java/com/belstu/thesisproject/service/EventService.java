@@ -6,9 +6,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventService {
     Event save(@NotNull Event event, @NotBlank String email);
+
+    Optional<Event> getByScheduledTimeAndPsychoId(LocalDateTime date, String psychoId);
 
     Event getByUserIdsAndDate(@NotNull final String userEmail, @NotNull final String psychoId, LocalDateTime date);
 

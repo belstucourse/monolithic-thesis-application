@@ -10,7 +10,6 @@ public class EventDto {
   private String clientId;
   private LocalDateTime date;
   private Boolean isEnded;
-  private Boolean isConfirmed;
   private String reasonForVisit;
   private String roomId;
   private String feedback;

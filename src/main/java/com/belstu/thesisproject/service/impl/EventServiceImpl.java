@@ -16,11 +16,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.APPOINTMENT_CONFIRMED_MESSAGE;
+import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.APPOINTMENT_REJECTED_MESSAGE;
 import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.CONGRATULATION;
 import static com.belstu.thesisproject.service.message.AppointmentMessageTemplates.REGISTER_APPOINTMENT_SUCCESSFULLY_MESSAGE;
-import static java.lang.Boolean.TRUE;
+import static java.lang.Boolean.FALSE;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -40,7 +41,7 @@ public class EventServiceImpl implements EventService {
         final String psychoEmail = psycho.getEmail();
         validateEmail(clientEmail, psychoEmail, email);
         final Event persistedEvent = eventRepository.save(event);
-        if (isEmpty(clientEmail) && isEmpty(psychoEmail)) {
+        if (isEmpty(clientEmail) || isEmpty(psychoEmail)) {
             throw new UserNotFoundException("Invalid email");
         }
         mailSenderService.send(clientEmail,
@@ -57,13 +58,13 @@ public class EventServiceImpl implements EventService {
         final String clientEmail = client.getEmail();
         final String psychoEmail = psycho.getEmail();
         final Event persistedEvent = eventRepository.save(event);
-        if (isEmpty(clientEmail) && isEmpty(psychoEmail)) {
+        if (isEmpty(clientEmail) || isEmpty(psychoEmail)) {
             throw new UserNotFoundException("Invalid email");
         }
-        if (persistedEvent.getIsConfirmed() == TRUE) {
+        if (persistedEvent.getIsConfirmed() == FALSE) {
             mailSenderService.send(clientEmail,
                     CONGRATULATION,
-                    format(APPOINTMENT_CONFIRMED_MESSAGE, psycho.getFirstName(), event.getDate().toString(), persistedEvent.getRoomId()));
+                    format(APPOINTMENT_REJECTED_MESSAGE, psycho.getFirstName(), event.getDate().toString()));
         }
         return persistedEvent;
     }
@@ -81,6 +82,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getByRoomId(String roomId) {
         return eventRepository.findByRoomId(roomId).orElseThrow(()->new UserNotFoundException(roomId));
+    }
+
+    @Override
+    public Optional<Event> getByScheduledTimeAndPsychoId(LocalDateTime date, String psychoId) {
+        return eventRepository.findByDateAndPsychologistId(date, psychoId);
     }
 
     @Override
