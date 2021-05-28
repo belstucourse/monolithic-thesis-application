@@ -143,7 +143,7 @@ public class UserController {
         userService.delete(id);
     }
 
-    @GetMapping("/doctors")
+    @GetMapping("/doctors/search")
     public Page<PsychologistDto> getPsychologistsByTagNamesAndWorkday(@RequestParam List<String> tagNames,
                                                                       @RequestParam LocalDateTime startDate,
                                                                       @RequestParam LocalDateTime endDate,
