@@ -6,7 +6,7 @@ import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.dto.FileType;
 import com.belstu.thesisproject.dto.user.PsychologistDto;
 import com.belstu.thesisproject.dto.user.UserDto;
-import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.exception.NotFoundException;
 import com.belstu.thesisproject.mapper.UserMapper;
 import com.belstu.thesisproject.service.AmazonService;
 import com.belstu.thesisproject.service.UserService;
@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.belstu.thesisproject.dto.user.UserRole.ROLE_CLIENT;
@@ -47,7 +49,7 @@ public class UserController {
     private final AmazonService amazonService;
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable final String id) throws UserNotFoundException {
+    public UserDto getUserById(@PathVariable final String id) throws NotFoundException {
         final User user = userService.getUserById(id);
 
         final String sertificateUrl = amazonService.getSertificateUrl(user.getId(), FileType.AVATAR);
@@ -86,14 +88,14 @@ public class UserController {
     }
 
     @GetMapping
-    public UserDto getUserByEmail(@RequestParam final String email) throws UserNotFoundException {
+    public UserDto getUserByEmail(@RequestParam final String email) throws NotFoundException {
         return userMapper.map(userService.getUserByEmail(email));
     }
 
     @GetMapping("/all")
-    public List<UserDto> getAllUsers() throws UserNotFoundException {
+    public List<UserDto> getAllUsers() throws NotFoundException {
         final List<User> allUsers = userService.getAllUsers();
-        allUsers.stream().forEach(user -> {
+        allUsers.forEach(user -> {
             final String sertificateUrl = amazonService.getSertificateUrl(user.getId(), FileType.AVATAR);
             if (user instanceof Client) {
                 ((Client) user).setAvatarUrl(sertificateUrl);
@@ -116,7 +118,7 @@ public class UserController {
     @PutMapping
     @Validated(OnUpdate.class)
     public UserDto updateUser(@RequestBody @Valid final UserDto userDto)
-            throws UserNotFoundException {
+            throws NotFoundException {
         final User user = userMapper.map(userDto);
         return userMapper.map(userService.update(user));
     }
@@ -124,20 +126,37 @@ public class UserController {
     @PutMapping("/psycho")
     @Validated(OnUpdate.class)
     public PsychologistDto updatePsychologist(@RequestBody @Valid final PsychologistDto psychologistDto)
-            throws UserNotFoundException {
+            throws NotFoundException {
         final Psychologist psychologist = userMapper.map(psychologistDto);
         return userMapper.map(userService.update(psychologist));
     }
 
     @PatchMapping
-    public UserDto patchUser(@RequestBody final UserDto userDto) throws UserNotFoundException {
+    public UserDto patchUser(@RequestBody final UserDto userDto) throws NotFoundException {
         final User user = userMapper.map(userDto);
         return userMapper.map(userService.patch(user));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = OK)
-    public void deleteById(@PathVariable final String id) throws UserNotFoundException {
+    public void deleteById(@PathVariable final String id) throws NotFoundException {
         userService.delete(id);
+    }
+
+    @GetMapping("/doctors")
+    public Page<PsychologistDto> getPsychologistsByTagNamesAndWorkday(@RequestParam List<String> tagNames,
+                                                                      @RequestParam LocalDateTime startDate,
+                                                                      @RequestParam LocalDateTime endDate,
+                                                                      @PageableDefault(
+                                                                              sort = {"id"},
+                                                                              direction = DESC) Pageable pageable) {
+        final Page<Psychologist> psychologists = userService.getPsychologistsByTagNamesAndWorkday(tagNames, startDate, endDate, pageable);
+        final Page<PsychologistDto> psychologistDtos = psychologists.map(userMapper::map);
+        psychologistDtos.map(psychologistDto -> {
+            final String sertificateUrl = amazonService.getSertificateUrl(psychologistDto.getId(), FileType.AVATAR);
+            psychologistDto.setAvatarUrl(sertificateUrl);
+            return psychologistDto;
+        });
+        return psychologistDtos;
     }
 }

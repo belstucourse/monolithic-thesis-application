@@ -59,7 +59,7 @@ public class PsychoWorkdayGeneratorImpl implements PsychoWorkdayGenerator {
         LocalDateTime current = getNearestDateTimeForGeneratingTimeslots(startDateTime);
         LocalDateTime to = endDateTime.minusMinutes(TIMESLOT_SIZE);
         while (TimeIntervalUtils.dateTimeIsBeforeOrEqual(current, to)) {
-            if (eventService.getByScheduledTimeAndPsychoId(current, getPsychoId(psychologist)).isPresent()) {
+            if (eventService.getByScheduledTimeAndPsychoId(current, getPsychoId(psychologist)).isEmpty()) {
                 timeslots.add(current);
             }
             current = current.plusMinutes(TIMESLOT_SIZE);

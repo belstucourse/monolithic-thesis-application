@@ -2,7 +2,7 @@ package com.belstu.thesisproject.mapper;
 
 import com.belstu.thesisproject.domain.chat.Message;
 import com.belstu.thesisproject.dto.chat.MessageDto;
-import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.exception.NotFoundException;
 import com.belstu.thesisproject.service.UserService;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.InheritInverseConfiguration;
@@ -33,7 +33,7 @@ public abstract class MessageMapper {
     try {
       message.setSender(userService.getUserById(senderId));
       message.setRecipient(userService.getUserById(recipientId));
-    } catch (UserNotFoundException e) {
+    } catch (NotFoundException e) {
       e.printStackTrace();
     }
   }

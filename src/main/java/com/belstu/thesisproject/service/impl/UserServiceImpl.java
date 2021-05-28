@@ -3,7 +3,7 @@ package com.belstu.thesisproject.service.impl;
 import com.belstu.thesisproject.domain.user.Psychologist;
 import com.belstu.thesisproject.domain.user.Tag;
 import com.belstu.thesisproject.domain.user.User;
-import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.exception.NotFoundException;
 import com.belstu.thesisproject.repository.PsychologistRepository;
 import com.belstu.thesisproject.repository.TagRepository;
 import com.belstu.thesisproject.repository.UserRepository;
@@ -22,10 +22,12 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @Service
@@ -40,8 +42,8 @@ public class UserServiceImpl implements UserService {
     private final PsychologistRepository psychologistRepository;
 
     @Override
-    public User getUserById(@NotNull final String id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public User getUserById(@NotNull final String id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(@NotBlank final String username) throws UserNotFoundException {
+    public User getUserByEmail(@NotBlank final String username) throws NotFoundException {
         return userRepository
                 .findByEmail(username)
                 .orElseThrow(() -> new EntityNotFoundException(username));
@@ -74,10 +76,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User update(@NotNull final User newUser) throws UserNotFoundException {
+    public User update(@NotNull final User newUser) throws NotFoundException {
         final String userId = newUser.getId();
         final User existingUser =
-                userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+                userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
         final String newPassword = newUser.getPassword();
         if (StringUtils.isNoneEmpty(newPassword)) {
             existingUser.setPassword(passwordEncoder.encode(newPassword));
@@ -86,14 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Psychologist update(@NotNull Psychologist newPsychologist) throws UserNotFoundException {
+    public Psychologist update(@NotNull Psychologist newPsychologist) throws NotFoundException {
         final String psychologistId = newPsychologist.getId();
         final User existingPsychologist =
-                psychologistRepository.findById(psychologistId).orElseThrow(() -> new UserNotFoundException(psychologistId));
+                psychologistRepository.findById(psychologistId).orElseThrow(() -> new NotFoundException(psychologistId));
         return (Psychologist) existingPsychologist.update(userUpdater, newPsychologist);
     }
 
-    public void delete(@NotNull final String id) throws UserNotFoundException {
+    public void delete(@NotNull final String id) throws NotFoundException {
         userRepository.deleteById(id);
     }
 
@@ -126,5 +128,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Psychologist> getAllPsychologist() {
         return psychologistRepository.findAll();
+    }
+
+    @Override
+    public Page<Psychologist> getPsychologistsByTagNamesAndWorkday(List<String> tagNames, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        final List<String> tagIds = tagRepository.findByNameIn(tagNames).stream().map(Tag::getId).collect(toList());
+        return psychologistRepository.findByTagsAndWorkdayDate(tagIds, startDate, endDate, pageable);
     }
 }
