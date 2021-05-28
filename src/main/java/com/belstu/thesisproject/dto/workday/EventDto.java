@@ -13,4 +13,7 @@ public class EventDto {
   private String reasonForVisit;
   private String roomId;
   private String feedback;
+
+  private String psychologistName;
+  private String ClientName;
 }

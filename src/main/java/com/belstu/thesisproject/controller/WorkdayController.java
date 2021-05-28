@@ -5,6 +5,7 @@ import com.belstu.thesisproject.dto.workday.PsychoAvailableTimeslotDto;
 import com.belstu.thesisproject.dto.workday.PsychoWorkdayDto;
 import com.belstu.thesisproject.generator.PsychoWorkdayGenerator;
 import com.belstu.thesisproject.mapper.WorkdayMapper;
+import com.belstu.thesisproject.service.EventService;
 import com.belstu.thesisproject.service.WorkdayService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,9 +33,11 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 public class WorkdayController {
     private final WorkdayService workdayService;
+    private final EventService eventService;
     private final PsychoWorkdayGenerator workdayGenerator;
     private final WorkdayMapper workdayMapper;
     private final Integer ONE_WEEK = 1;
+
 
     @GetMapping("/{psychoId}")
     public PsychoAvailableTimeslotDto getTimeSlotsOfPsycho(
@@ -55,9 +58,20 @@ public class WorkdayController {
     public List<PsychoAvailableTimeslotDto> getTimeSlotsOfPsychoOnWeek(
             @PathVariable String psychoId) {
         final LocalDate endDate = now().plusWeeks(ONE_WEEK);
-        return now().datesUntil(endDate, Period.ofDays(1))
+
+        var res =  now().datesUntil(endDate, Period.ofDays(1))
                 .map(date -> workdayService.getWorkdayByPsychoIdAndWorkingDate(psychoId, date))
                 .map(workdayGenerator::generateWorkday).collect(Collectors.toList());
+
+        var psychoEvent = eventService.getByPsychoId(psychoId);
+
+        for (var workday: res) {
+            for (var busySlot: psychoEvent) {
+                workday.getSlots().removeIf(x -> x.isEqual(busySlot.getDate()));
+            }
+        }
+
+        return res;
     }
 
     @PostMapping
