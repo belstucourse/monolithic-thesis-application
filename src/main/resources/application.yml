@@ -26,8 +26,9 @@ spring:
     #          lob:
     #            non_contextual_creation: true
     generate-ddl: true
+    show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 springdoc:
   api-docs:
     path: '/api-docs'
