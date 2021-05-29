@@ -1,8 +1,14 @@
 package com.belstu.thesisproject.controller;
 
 import com.belstu.thesisproject.domain.workday.Event;
+import com.belstu.thesisproject.domain.workday.Prescription;
+import com.belstu.thesisproject.domain.workday.PsychoEventNotes;
 import com.belstu.thesisproject.dto.workday.EventDto;
+import com.belstu.thesisproject.dto.workday.PrescriptionDto;
+import com.belstu.thesisproject.dto.workday.PsychoEventNotesDto;
 import com.belstu.thesisproject.mapper.EventMapper;
+import com.belstu.thesisproject.mapper.PrescriptionMapper;
+import com.belstu.thesisproject.mapper.PsychoEventNotesMapper;
 import com.belstu.thesisproject.service.EventService;
 import com.belstu.thesisproject.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,6 +32,8 @@ import static com.belstu.thesisproject.service.CurrentUserEmailExtractor.getEmai
 public class EventController {
     private final EventMapper eventMapper;
     private final EventService eventService;
+    private final PrescriptionMapper prescriptionMapper;
+    private final PsychoEventNotesMapper psychoEventNotesMapper;
     private final UserService userService;
 
     @GetMapping
@@ -73,5 +81,31 @@ public class EventController {
     public EventDto updateEvent(@RequestBody EventDto eventDto) {
         final Event event = eventMapper.map(eventDto);
         return eventMapper.map(eventService.update(event));
+    }
+
+    @GetMapping("/prescriptions/{eventId}")
+    public PrescriptionDto getPrescriptionByEventId(@PathVariable String eventId) {
+        final String email = getEmailOfCurrentUser();
+        return prescriptionMapper.map(eventService.getPrescriptionByEventId(eventId, email));
+    }
+
+    @PostMapping("/prescriptions")
+    public PrescriptionDto savePrescription(@RequestBody PrescriptionDto prescriptionDto) {
+        final String email = getEmailOfCurrentUser();
+        final Prescription prescription = prescriptionMapper.map(prescriptionDto);
+        return prescriptionMapper.map(eventService.savePrescription(prescription, email));
+    }
+
+    @GetMapping("/notes/{eventId}")
+    public PsychoEventNotesDto getEventNotesByEventId(@PathVariable String eventId) {
+        final String email = getEmailOfCurrentUser();
+        return psychoEventNotesMapper.map(eventService.getEventNotesByEventId(eventId, email));
+    }
+
+    @PostMapping("/notes")
+    public PsychoEventNotesDto saveEventNotes(@RequestBody PsychoEventNotesDto psychoEventNotesDto) {
+        final String email = getEmailOfCurrentUser();
+        final PsychoEventNotes psychoEventNotes = psychoEventNotesMapper.map(psychoEventNotesDto);
+        return psychoEventNotesMapper.map(eventService.saveEventNotes(psychoEventNotes, email));
     }
 }

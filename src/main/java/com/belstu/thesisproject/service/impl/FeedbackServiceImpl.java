@@ -1,7 +1,7 @@
 package com.belstu.thesisproject.service.impl;
 
 import com.belstu.thesisproject.domain.Feedback;
-import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.exception.NotFoundException;
 import com.belstu.thesisproject.repository.FeedbackRepository;
 import com.belstu.thesisproject.service.FeedbackService;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback get(String id) {
-        return feedbackRepository.findById(id).orElseThrow(()->new UserNotFoundException("Feedback not found"));
+        return feedbackRepository.findById(id).orElseThrow(()->new NotFoundException("Feedback not found"));
     }
 
     @Override
