@@ -1,11 +1,13 @@
 package com.belstu.thesisproject.controller;
 
+import com.belstu.thesisproject.dto.workday.DetailedEventDto;
 import com.belstu.thesisproject.domain.workday.Event;
 import com.belstu.thesisproject.domain.workday.Prescription;
 import com.belstu.thesisproject.domain.workday.PsychoEventNotes;
 import com.belstu.thesisproject.dto.workday.EventDto;
 import com.belstu.thesisproject.dto.workday.PrescriptionDto;
 import com.belstu.thesisproject.dto.workday.PsychoEventNotesDto;
+import com.belstu.thesisproject.mapper.DetailedEventMapper;
 import com.belstu.thesisproject.mapper.EventMapper;
 import com.belstu.thesisproject.mapper.PrescriptionMapper;
 import com.belstu.thesisproject.mapper.PsychoEventNotesMapper;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class EventController {
     private final PrescriptionMapper prescriptionMapper;
     private final PsychoEventNotesMapper psychoEventNotesMapper;
     private final UserService userService;
+    private final DetailedEventMapper detailedEventMapper;
 
     @GetMapping
     public EventDto getEvent(@RequestParam String clientId, @RequestParam String psychoId, @RequestParam LocalDateTime date) {
@@ -61,6 +65,32 @@ public class EventController {
     @GetMapping("/{psychoId}")
     public List<EventDto> getEventOfPsycho(@PathVariable String psychoId) {
         List<EventDto> res = eventMapper.mapToDtoList(eventService.getByPsychoId(psychoId));
+        for (var event: res){
+            var client = userService.getUserById(event.getClientId());
+            var psychologist = userService.getUserById(event.getPsychologistId());
+            event.setClientName(client.getFirstName() + " " + client.getMiddleName() + " " + client.getLastName());
+            event.setPsychologistName(psychologist.getFirstName() + " " + psychologist.getMiddleName() + " " + psychologist.getLastName());
+        }
+        return res;
+    }
+
+    @GetMapping("/{clientId}/client/details")
+    @Transactional
+    public List<DetailedEventDto> getClientDetailedEvents(@PathVariable String clientId) {
+        List<DetailedEventDto> res = detailedEventMapper.mapToDtoList(eventService.getClientEvents(clientId));
+        for (var event: res){
+            var client = userService.getUserById(event.getClientId());
+            var psychologist = userService.getUserById(event.getPsychologistId());
+            event.setClientName(client.getFirstName() + " " + client.getMiddleName() + " " + client.getLastName());
+            event.setPsychologistName(psychologist.getFirstName() + " " + psychologist.getMiddleName() + " " + psychologist.getLastName());
+        }
+        return res;
+    }
+
+    @GetMapping("/{psychoId}/details")
+    @Transactional
+    public List<DetailedEventDto> getDetailedEventOfPsycho(@PathVariable String psychoId) {
+        List<DetailedEventDto> res = detailedEventMapper.mapToDtoList(eventService.getByPsychoId(psychoId));
         for (var event: res){
             var client = userService.getUserById(event.getClientId());
             var psychologist = userService.getUserById(event.getPsychologistId());
