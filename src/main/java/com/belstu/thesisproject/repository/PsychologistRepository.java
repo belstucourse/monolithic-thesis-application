@@ -13,10 +13,10 @@ import java.util.List;
 public interface PsychologistRepository extends JpaRepository<Psychologist, String> {
     Page<Psychologist> findDistinctByTagsIn(List<Tag> tags, Pageable pageable);
 
-    @Query(value = "SELECT * FROM Psychologist p " +
+    @Query(value = "SELECT DISTINCT ON (p.id) * FROM Psychologist p " +
             "JOIN psychologist_tag pt ON p.id = pt.psychologist_id " +
             "JOIN psycho_workday pw ON pw.psychologist_id = p.id " +
-            "WHERE pt.tag_id IN ?1 AND pw.start_date_time >= ?2 " +
-            "AND pw.end_date_time <= ?3", nativeQuery = true)
+            "JOIN users u ON u.id = p.id " +
+            "WHERE pt.tag_id IN ?1 AND (?2 BETWEEN pw.start_date_time AND pw.end_date_time OR ?3 BETWEEN pw.start_date_time AND pw.end_date_time)", nativeQuery = true)
     Page<Psychologist> findByTagsAndWorkdayDate(List<String> tagIds, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }

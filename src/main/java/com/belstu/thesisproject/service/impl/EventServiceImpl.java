@@ -91,10 +91,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public Prescription savePrescription(Prescription prescription, String email) {
         final Event event = eventRepository.findById(prescription.getEvent().getId()).orElseThrow(() -> new NotFoundException("Event not found"));
         final User psycho = userService.getUserById(event.getPsychologist().getId());
         validatePsychoEmail(psycho, email);
+        event.setPrescription(prescription);
         return prescriptionRepository.save(prescription);
     }
 
@@ -113,10 +115,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public PsychoEventNotes saveEventNotes(PsychoEventNotes psychoEventNotes, String email) {
         final Event event = eventRepository.findById(psychoEventNotes.getEvent().getId()).orElseThrow(() -> new NotFoundException("Event not found"));
         final User psycho = userService.getUserById(event.getPsychologist().getId());
         validatePsychoEmail(psycho, email);
+        event.setPsychoEventNotes(psychoEventNotes);
         return psychoEventNotesRepository.save(psychoEventNotes);
     }
 

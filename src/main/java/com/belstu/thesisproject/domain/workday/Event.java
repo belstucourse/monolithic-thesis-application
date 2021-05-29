@@ -58,11 +58,11 @@ public class Event {
     @Column(name = "feedback")
     private String feedback;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
     private Prescription prescription;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "note_id", referencedColumnName = "id")
     private PsychoEventNotes psychoEventNotes;
 

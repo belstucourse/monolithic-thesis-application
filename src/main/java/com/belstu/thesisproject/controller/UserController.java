@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -145,8 +146,8 @@ public class UserController {
 
     @GetMapping("/doctors/search")
     public Page<PsychologistDto> getPsychologistsByTagNamesAndWorkday(@RequestParam List<String> tagNames,
-                                                                      @RequestParam LocalDateTime startDate,
-                                                                      @RequestParam LocalDateTime endDate,
+                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
                                                                       @PageableDefault(
                                                                               sort = {"id"},
                                                                               direction = DESC) Pageable pageable) {
