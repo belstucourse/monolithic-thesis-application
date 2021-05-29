@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class EventDto {
+public class DetailedEventDto {
     private String id;
     private String psychologistId;
     private String clientId;
@@ -18,4 +18,6 @@ public class EventDto {
     private String psychologistName;
     private String ClientName;
     private boolean isRepeated;
+    private PrescriptionDto prescription;
+    private PsychoEventNotesDto psychoEventNotes;
 }

@@ -63,7 +63,9 @@ public class EventServiceImpl implements EventService {
         final User psycho = userService.getUserById(event.getPsychologist().getId());
         final String clientEmail = client.getEmail();
         final String psychoEmail = psycho.getEmail();
-        final Event persistedEvent = eventRepository.save(event);
+        final Event persistedEvent = eventRepository.findById(event.getId()).orElseThrow(() -> new NotFoundException("Event not found"));
+        persistedEvent.setIsConfirmed(event.getIsConfirmed());
+        persistedEvent.setFeedback(event.getFeedback());
         if (isEmpty(clientEmail) || isEmpty(psychoEmail)) {
             throw new NotFoundException("Invalid email");
         }
@@ -72,6 +74,7 @@ public class EventServiceImpl implements EventService {
                     CONGRATULATION,
                     format(APPOINTMENT_REJECTED_MESSAGE, psycho.getFirstName(), event.getDate().toString()));
         }
+        eventRepository.save(persistedEvent);
         return persistedEvent;
     }
 

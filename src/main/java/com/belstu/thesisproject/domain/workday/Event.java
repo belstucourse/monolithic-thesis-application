@@ -9,7 +9,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,6 +19,7 @@ import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity(name = "event")
@@ -58,11 +58,14 @@ public class Event {
     @Column(name = "feedback")
     private String feedback;
 
-    @OneToOne(fetch = LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
+    @Column(name = "is_repeated")
+    private Boolean isRepeated;
+
+    @OneToOne(fetch = EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
     private Prescription prescription;
 
-    @OneToOne(fetch = LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(fetch = EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "note_id", referencedColumnName = "id")
     private PsychoEventNotes psychoEventNotes;
 
@@ -77,6 +80,8 @@ public class Event {
     public void OnUpdate() {
         if (!isConfirmed) {
             roomId = "";
+        } else {
+            isEnded = true;
         }
     }
 }
