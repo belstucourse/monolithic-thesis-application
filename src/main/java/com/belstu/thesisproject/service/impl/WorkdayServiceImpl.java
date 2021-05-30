@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -53,5 +54,10 @@ public class WorkdayServiceImpl implements WorkdayService {
         final LocalDate startDate = endDate.minusWeeks(1);
        // return workdayRepository.findByDateGreaterThanEqualAndDateLessThanEqualAndPsychologistId(startDate, endDate, psychoId);
         return workdayRepository.findByPsychologistId(psychoId); //TODO: check here
+    }
+
+    @Override
+    public List<PsychoWorkday> saveAll(@NotNull Collection<PsychoWorkday> workdays) {
+        return workdayRepository.saveAll(workdays);
     }
 }
