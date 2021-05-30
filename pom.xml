@@ -151,6 +151,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+<!--		Schema-validation: missing table-->
 <!--			<plugin>-->
 <!--				<groupId>com.coveo</groupId>-->
 <!--				<artifactId>fmt-maven-plugin</artifactId>-->

@@ -3,7 +3,7 @@ package com.belstu.thesisproject.mapper;
 import com.belstu.thesisproject.domain.post.Comment;
 import com.belstu.thesisproject.domain.user.User;
 import com.belstu.thesisproject.dto.post.CommentDto;
-import com.belstu.thesisproject.exception.UserNotFoundException;
+import com.belstu.thesisproject.exception.NotFoundException;
 import com.belstu.thesisproject.service.UserService;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.InheritInverseConfiguration;
@@ -33,7 +33,7 @@ public abstract class CommentMapper {
     try {
       user = userService.getUserById(senderId);
       comment.setSender(user);
-    } catch (UserNotFoundException e) {
+    } catch (NotFoundException e) {
       e.printStackTrace();
     }
   }
