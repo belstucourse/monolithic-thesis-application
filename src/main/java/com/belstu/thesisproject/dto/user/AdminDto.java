@@ -16,6 +16,7 @@ import lombok.ToString;
 @Setter
 @JsonTypeName("admin")
 public class AdminDto extends UserDto {
+  private LocalDate localDate;
   public AdminDto(
       String id,
       String firstName,
