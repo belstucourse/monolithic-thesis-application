@@ -1,6 +1,8 @@
 package com.belstu.thesisproject.service;
 
+import com.belstu.thesisproject.domain.post.Mark;
 import com.belstu.thesisproject.domain.post.Post;
+import com.belstu.thesisproject.domain.post.PostMarkResponse;
 import com.belstu.thesisproject.exception.AuthorNotFoundException;
 import com.belstu.thesisproject.exception.PostNotFoundException;
 import java.util.List;
@@ -23,4 +25,8 @@ public interface PostService {
   void delete(@NotNull final String postId) throws PostNotFoundException;
 
   Post patch(@NotNull final Post post) throws PostNotFoundException;
+
+  Mark saveMark(@NotNull final Mark mark);
+
+  PostMarkResponse getPostMarks(String postId);
 }
