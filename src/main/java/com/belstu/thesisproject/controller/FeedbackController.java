@@ -15,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/api/feedbacks")
 @AllArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class FeedbackController {
     private final FeedbackService feedbackService;
     private final FeedbackMapper feedbackMapper;

@@ -14,6 +14,7 @@ import com.belstu.thesisproject.mapper.PsychoEventNotesMapper;
 import com.belstu.thesisproject.service.EventService;
 import com.belstu.thesisproject.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ import static com.belstu.thesisproject.service.CurrentUserEmailExtractor.getEmai
 @RestController
 @RequestMapping("/api/event")
 @AllArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class EventController {
     private final EventMapper eventMapper;
     private final EventService eventService;

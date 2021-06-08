@@ -2,6 +2,7 @@ package com.belstu.thesisproject.controller;
 
 import com.belstu.thesisproject.service.PaymentService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/payment")
 @AllArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class PaymentController {
     private final PaymentService paymentService;
 

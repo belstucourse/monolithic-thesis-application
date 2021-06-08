@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,6 +45,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("api/users")
 @Validated
 @AllArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
