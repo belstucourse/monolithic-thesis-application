@@ -1,10 +1,13 @@
 package com.belstu.thesisproject.controller;
 
+import com.belstu.thesisproject.domain.post.Mark;
 import com.belstu.thesisproject.domain.post.Post;
+import com.belstu.thesisproject.domain.post.PostMarkResponse;
 import com.belstu.thesisproject.dto.post.PostDto;
 import com.belstu.thesisproject.exception.AuthorNotFoundException;
 import com.belstu.thesisproject.exception.PostNotFoundException;
 import com.belstu.thesisproject.mapper.PostMapper;
+import com.belstu.thesisproject.repository.MarkRepository;
 import com.belstu.thesisproject.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -87,4 +90,15 @@ public class PostController {
         }
         postService.delete(id);
     }
+
+    @PostMapping("/marks")
+    public Mark saveMark(@RequestBody final Mark mark) {
+        return postService.saveMark(mark);
+    }
+
+    @GetMapping("/marks/{postId}")
+    public PostMarkResponse getMarksPost(@PathVariable final String postId) {
+        return postService.getPostMarks(postId);
+    }
+
 }
