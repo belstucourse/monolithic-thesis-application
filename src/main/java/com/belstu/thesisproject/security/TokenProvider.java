@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.belstu.thesisproject.security.SecurityJwtConstants.AUTHORITIES_KEY;
+import static java.util.Arrays.asList;
 
 @Component
 @RequiredArgsConstructor
@@ -81,9 +82,7 @@ public class TokenProvider implements Serializable {
         final JwtParser jwtParser = Jwts.parser().setSigningKey(SecurityJwtConstants.SIGNING_KEY);
         final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
         final Claims claims = claimsJws.getBody();
-        final Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        final Collection<? extends GrantedAuthority> authorities = asList(new SimpleGrantedAuthority("ROLE_CLIENT"));
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 }
