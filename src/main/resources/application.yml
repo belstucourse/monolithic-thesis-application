@@ -8,7 +8,7 @@ spring:
   mail:
     host: 'smtp.yandex.ru'
     username: 'alexeevilyuschka@yandex.ru'
-    password: 'nobafa55'
+    password: 'Aleks1922'
     port: '465'
     protocol: 'smtps'
     debug: 'true'
