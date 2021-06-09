@@ -49,7 +49,7 @@ public class Post {
   @OneToMany(
       mappedBy = "post",
       fetch = FetchType.LAZY,
-      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+      cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
   private Set<Comment> comments;
 
   @PrePersist

@@ -10,9 +10,11 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring", uses = UserService.class)
 public abstract class CommentMapper {
+  @Autowired
   protected UserService userService;
 
   @Mapping(source = "commentDto.postId", target = "post.id")
